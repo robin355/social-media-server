@@ -20,6 +20,12 @@ async function run() {
             const result = await UserInfoCollections.insertOne(info)
             res.send(result)
         })
+        app.get('/userInfo', async (req, res) => {
+            const email = req.query.email;
+            const query = { email }
+            const userInfo = await UserInfoCollections.findOne(query)
+            res.send(userInfo)
+        })
 
     }
     finally {

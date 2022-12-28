@@ -15,6 +15,25 @@ async function run() {
     try {
         const postCollections = client.db('social').collection('posts')
         const UserInfoCollections = client.db('social').collection('about')
+        app.post('/post', async (req, res) => {
+            const posts = req.body;
+            const result = await postCollections.insertOne(posts)
+            res.send(result)
+        })
+        app.get('/post', async (req, res) => {
+            const query = {}
+            const result = await postCollections.find(query).toArray()
+            res.send(result)
+        })
+        app.get('/post/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const details = await postCollections.findOne(query);
+            res.send(details)
+        })
+
+
+
         app.post('/userInfo', async (req, res) => {
             const info = req.body
             const result = await UserInfoCollections.insertOne(info)

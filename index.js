@@ -32,8 +32,6 @@ async function run() {
             res.send(details)
         })
 
-
-
         app.post('/userInfo', async (req, res) => {
             const info = req.body
             const result = await UserInfoCollections.insertOne(info)

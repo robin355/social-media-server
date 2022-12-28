@@ -31,7 +31,28 @@ async function run() {
             const details = await postCollections.findOne(query);
             res.send(details)
         })
-
+        app.get('/toplike', async (req, res) => {
+            const query = {}
+            const cursor = postCollections.find(query).limit(3).sort({ counter: -1 })
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+        app.patch('/update/:id', async (req, res) => {
+            const id = req.params.id;
+            const unique = { _id: ObjectId(id) };
+            const user = req.body;
+            const option = { upsert: true };
+            const updateDetails = {
+                $set: {
+                    title: user.title,
+                    post: user.post,
+                    image: user.image,
+                    counter: user.counter,
+                }
+            }
+            const result = await postCollections.updateOne(unique, updateDetails, option);
+            res.send(result);
+        })
         app.post('/userInfo', async (req, res) => {
             const info = req.body
             const result = await UserInfoCollections.insertOne(info)
